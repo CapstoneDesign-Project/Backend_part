@@ -22,6 +22,7 @@ public class SchoolScheduleController {
 
     @GetMapping("/resultSchoolSchedule/{sdSchulCode}")
     public List<SchoolSchedule> ResultSchoolSchedule(@PathVariable String sdSchulCode){
+        System.out.println("학사일정 조회 성공");
         return schoolScheduleService.getAllSchoolSchedules(sdSchulCode);
     }
 
@@ -36,4 +37,5 @@ public class SchoolScheduleController {
         }
         return schedules;
     }
+
 }
