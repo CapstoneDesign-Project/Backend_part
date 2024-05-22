@@ -11,7 +11,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-//@RequiredArgsConstructor
 public class SchoolScheduleController {
 
     private final SchoolScheduleService schoolScheduleService;
@@ -27,10 +26,14 @@ public class SchoolScheduleController {
     }
 
     @PostMapping("/getSchoolSchedule")
-    public String GetSchoolSchedule(@RequestBody Map<String, String> requestBody) {
+    public List<SchoolSchedule> getSchoolSchedule(@RequestBody Map<String, String> requestBody) {
         String sdSchulCode = requestBody.get("SD_SCHUL_CODE");
-        schoolScheduleService.fetchAndSaveSchoolSchedule(sdSchulCode);
-        return ResultSchoolSchedule(sdSchulCode).toString();
-    }
+        List<SchoolSchedule> schedules = schoolScheduleService.getAllSchoolSchedules(sdSchulCode);
 
+        if (schedules.isEmpty()) {
+            schoolScheduleService.fetchAndSaveSchoolSchedule(sdSchulCode);
+            schedules = schoolScheduleService.getAllSchoolSchedules(sdSchulCode);
+        }
+        return schedules;
+    }
 }

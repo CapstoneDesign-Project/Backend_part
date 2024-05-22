@@ -4,6 +4,7 @@ import com.example.una.userInfo.dto.ChildDTO;
 import com.example.una.userInfo.dto.ParentDTO;
 import com.example.una.userInfo.dto.TeacherDTO;
 import com.example.una.userInfo.dto.TeacherUpdateRequest;
+import com.example.una.userInfo.entity.Teacher;
 import com.example.una.userInfo.service.ParentService;
 import com.example.una.userInfo.service.TeacherService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -25,13 +27,15 @@ public class UserController {
     private ParentService parentService;
 
     @PostMapping("/save-teacher")
-    private void saveTeacher(@RequestBody TeacherDTO teacherDTO){
-        teacherService.saveTeacher(teacherDTO);
+    public ResponseEntity<Teacher> saveTeacher(@RequestBody TeacherDTO teacherDTO){
+        Teacher savedTeacher = teacherService.saveTeacher(teacherDTO);
+        return ResponseEntity.ok(savedTeacher);
     }
 
     @PostMapping("/save-parent")
-    private void saveParent(@RequestBody ParentDTO parentDTO){
-        parentService.saveParent(parentDTO);
+    public ResponseEntity<ParentDTO> saveParent(@RequestBody ParentDTO parentDTO){
+        ParentDTO savedParentDTO = parentService.saveParent(parentDTO);
+        return ResponseEntity.ok(savedParentDTO);
     }
 
     @PutMapping("/update-teacher/{teacherKakaoId}")

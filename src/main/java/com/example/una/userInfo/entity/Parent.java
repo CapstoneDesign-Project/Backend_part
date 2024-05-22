@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "parentTest")
+@Table(name = "parent")
 @Getter
 @Setter
 public class Parent {

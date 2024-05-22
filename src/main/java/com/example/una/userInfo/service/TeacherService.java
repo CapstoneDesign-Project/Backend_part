@@ -16,7 +16,7 @@ public class TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    public void saveTeacher(TeacherDTO teacherDTO){
+    public Teacher saveTeacher(TeacherDTO teacherDTO){
         Teacher teacher = new Teacher();
 
         teacher.setTeacherSchool(teacherDTO.getTeacherSchool());
@@ -26,7 +26,8 @@ public class TeacherService {
         teacher.setTeacherName(teacherDTO.getTeacherName());
         teacher.setTeacherPhoneNumber(teacherDTO.getTeacherPhoneNumber());
         teacher.setTeacherKakaoId(teacherDTO.getTeacherKakaoId());
-        teacherRepository.save(teacher);
+
+        return teacherRepository.save(teacher);
     }
 
     public void updateTeacher(Long teacherKakaoId, String newSchool, int newGrade, int newClass) {

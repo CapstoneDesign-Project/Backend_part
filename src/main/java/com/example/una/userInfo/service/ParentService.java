@@ -8,11 +8,10 @@ import com.example.una.userInfo.repository.ChildRepository;
 import com.example.una.userInfo.repository.ParentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,36 +23,52 @@ public class ParentService {
     @Autowired
     private ChildRepository childRepository;
 
-    public ResponseEntity<String> saveParent(ParentDTO request) {
-        try {
-            // 부모 정보 저장
-            Parent parent = new Parent();
-            parent.setParentName(request.getParentName());
-            parent.setParentEmail(request.getParentEmail());
-            parent.setParentPhoneNumber(request.getParentPhoneNumber());
-            parent.setParentKakaoId(request.getParentKakaoId());
+    public ParentDTO saveParent(ParentDTO request) {
+        // 부모 정보 저장
+        Parent parent = new Parent();
+        parent.setParentName(request.getParentName());
+        parent.setParentEmail(request.getParentEmail());
+        parent.setParentPhoneNumber(request.getParentPhoneNumber());
+        parent.setParentKakaoId(request.getParentKakaoId());
 
-            // 자식 정보 저장
-            List<ChildDTO> childDTOList = request.getChildren();
-            List<Child> children = new ArrayList<>();
-            for (ChildDTO childDTO : childDTOList) {
-                Child child = new Child();
-                child.setChildName(childDTO.getChildName());
-                child.setChildSchool(childDTO.getChildSchool());
-                child.setChildGrade(childDTO.getChildGrade());
-                child.setChildClass(childDTO.getChildClass());
-                child.setChildNumber(childDTO.getChildNumber());
-                child.setParent(parent);
-                children.add(child);
-            }
-            parent.setChildren(children);
-
-            parentRepository.save(parent);
-
-            return new ResponseEntity<>("Child added successfully", HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Failed to add child", HttpStatus.INTERNAL_SERVER_ERROR);
+        // 자식 정보 저장
+        List<ChildDTO> childDTOList = request.getChildren();
+        List<Child> children = new ArrayList<>();
+        for (ChildDTO childDTO : childDTOList) {
+            Child child = new Child();
+            child.setChildName(childDTO.getChildName());
+            child.setChildSchool(childDTO.getChildSchool());
+            child.setChildGrade(childDTO.getChildGrade());
+            child.setChildClass(childDTO.getChildClass());
+            child.setChildNumber(childDTO.getChildNumber());
+            child.setParent(parent);
+            children.add(child);
         }
+        parent.setChildren(children);
+
+        Parent savedParent = parentRepository.save(parent);
+
+        // Parent를 ParentDTO로 변환
+        ParentDTO parentDTO = new ParentDTO();
+        parentDTO.setParentName(savedParent.getParentName());
+        parentDTO.setParentEmail(savedParent.getParentEmail());
+        parentDTO.setParentPhoneNumber(savedParent.getParentPhoneNumber());
+        parentDTO.setParentKakaoId(savedParent.getParentKakaoId());
+
+        List<ChildDTO> savedChildDTOList = savedParent.getChildren().stream().map(child -> {
+            ChildDTO childDTO = new ChildDTO();
+            childDTO.setChildId(child.getChildId());
+            childDTO.setChildName(child.getChildName());
+            childDTO.setChildSchool(child.getChildSchool());
+            childDTO.setChildGrade(child.getChildGrade());
+            childDTO.setChildClass(child.getChildClass());
+            childDTO.setChildNumber(child.getChildNumber());
+            return childDTO;
+        }).collect(Collectors.toList());
+
+        parentDTO.setChildren(savedChildDTOList);
+
+        return parentDTO;
     }
 
     public void updateChild(Long parentKakaoId, String childName, ChildDTO childDTO){
