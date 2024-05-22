@@ -67,7 +67,7 @@ public class KakaoService {
             accessToken  = (String) jsonObj.get("access_token");
             refreshToken = (String) jsonObj.get("refresh_token");
         } catch (Exception e) {
-            throw new Exception("API call failed");
+            throw new Exception("API call failed {}", e);
         }
 
         return getUserInfoWithToken(accessToken, refreshToken);
