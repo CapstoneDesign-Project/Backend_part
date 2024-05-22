@@ -115,7 +115,7 @@ public class KakaoService {
                 .gender(gender)
                 .name(name)
                 .phone_number(phone_number)
-                .shipping_address(shipping_address)
+//                .shipping_address(shipping_address)
                 .access_token(accessToken)
                 .refresh_token(refreshToken)
                 .build();
