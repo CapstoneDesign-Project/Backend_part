@@ -36,4 +36,7 @@ public class Appointment {
 
     @Column(name = "teacher_kakao_id")
     private Long teacherKakaoId;
+
+    @Column(length = 255)
+    private String description;
 }

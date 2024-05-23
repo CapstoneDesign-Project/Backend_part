@@ -26,4 +26,5 @@ public class UpdateAppointmentRequestDTO {
     private Long parentKakaoId;
     @NotNull
     private Long teacherKakaoId;
+    private String description;
 }
