@@ -26,4 +26,6 @@ public class AppointmentDTO {
 
     @NotNull
     private Long teacherKakaoId;
+
+    private String description;
 }

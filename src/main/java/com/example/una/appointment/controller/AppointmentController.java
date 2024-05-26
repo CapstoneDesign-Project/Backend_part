@@ -37,6 +37,7 @@ public class AppointmentController {
                 .status(appointment.getStatus())
                 .parentKakaoId(appointment.getParentKakaoId())
                 .teacherKakaoId(appointment.getTeacherKakaoId())
+                .description(appointment.getDescription())
                 .build();
     }
 
@@ -49,6 +50,7 @@ public class AppointmentController {
                 .status(appointmentDTO.getStatus())
                 .parentKakaoId(appointmentDTO.getTeacherKakaoId())
                 .teacherKakaoId(appointmentDTO.getTeacherKakaoId())
+                .description(appointmentDTO.getDescription())
                 .build();
     }
 
