@@ -116,4 +116,8 @@ public class ParentService {
             return null;
         }
     }
+
+    public List<Parent> getParentsByChildSchoolGradeAndClass(String school, int grade, int clazz) {
+        return parentRepository.findParentsByChildSchoolGradeAndClass(school, grade, clazz);
+    }
 }

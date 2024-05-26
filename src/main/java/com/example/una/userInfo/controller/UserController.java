@@ -1,9 +1,7 @@
 package com.example.una.userInfo.controller;
 
-import com.example.una.userInfo.dto.ChildDTO;
-import com.example.una.userInfo.dto.ParentDTO;
-import com.example.una.userInfo.dto.TeacherDTO;
-import com.example.una.userInfo.dto.TeacherUpdateRequest;
+import com.example.una.userInfo.dto.*;
+import com.example.una.userInfo.entity.Parent;
 import com.example.una.userInfo.entity.Teacher;
 import com.example.una.userInfo.service.ParentService;
 import com.example.una.userInfo.service.TeacherService;
@@ -13,7 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -67,13 +68,21 @@ public class UserController {
         }
     }
 
-    @GetMapping("/parent-info/{parentKakaoId}")
-    public ResponseEntity<Map<String, String>> getParentInfo(@PathVariable Long parentKakaoId) {
-        Map<String, String> parentInfo = parentService.getParentInfoByKakaoId(parentKakaoId);
-        if (parentInfo != null) {
-            return ResponseEntity.ok(parentInfo);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/parents-info")
+    public ResponseEntity<List<Map<String, String>>> getParentsInfoByClass(@RequestBody ClassRequestDTO classRequest) {
+        String school = classRequest.getSchool();
+        int grade = classRequest.getGrade();
+        int clazz = classRequest.getClazz();
+
+        List<Parent> parents = parentService.getParentsByChildSchoolGradeAndClass(school, grade, clazz);
+
+        List<Map<String, String>> parentInfoList = parents.stream().map(parent -> {
+            Map<String, String> info = new HashMap<>();
+            info.put("parentName", parent.getParentName());
+            info.put("parentPhoneNumber", parent.getParentPhoneNumber());
+            return info;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(parentInfoList);
     }
 }
