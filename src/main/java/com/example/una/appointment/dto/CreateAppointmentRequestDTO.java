@@ -22,4 +22,5 @@ public class CreateAppointmentRequestDTO {
     private int status;
     @NotNull
     private Long parentKakaoId;
+    private String description;
 }
