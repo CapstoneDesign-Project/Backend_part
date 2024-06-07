@@ -27,7 +27,7 @@ public class KakaoController {
         return ResponseEntity.ok().body(new MsgEntity("Success", kakaoInfo));
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ResponseEntity<String> logout(@RequestParam("access_token") String accessToken) {
         try {
             // KakaoService를 사용하여 로그아웃 요청을 보냄
