@@ -85,4 +85,14 @@ public class UserController {
 
         return ResponseEntity.ok(parentInfoList);
     }
+
+    @GetMapping("/parent-content")
+    public ResponseEntity<ParentDTO> parentContent(@RequestParam("parent-id") Long parentKakaoId){
+        ParentDTO parentDTO = parentService.getParentByKakaoId(parentKakaoId);
+        if (parentDTO != null) {
+            return ResponseEntity.ok(parentDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
