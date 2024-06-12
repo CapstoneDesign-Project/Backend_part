@@ -124,4 +124,22 @@ public class ParentService {
     public List<Parent> getParentsByChildSchoolGradeAndClass(String school, int grade, int clazz) {
         return parentRepository.findParentsByChildSchoolGradeAndClass(school, grade, clazz);
     }
+
+    public ParentDTO getParentByKakaoId(Long parentKakaoId) {
+        Optional<Parent> optionalParent = parentRepository.findByParentKakaoId(parentKakaoId);
+        if (optionalParent.isPresent()) {
+            Parent parent = optionalParent.get();
+            ParentDTO parentDTO = new ParentDTO();
+            parentDTO.setParentName(parent.getParentName());
+            parentDTO.setParentEmail(parent.getParentEmail());
+            parentDTO.setParentPhoneNumber(parent.getParentPhoneNumber());
+            parentDTO.setParentKakaoId(parent.getParentKakaoId());
+            // Children 정보는 추가하지 않음
+
+            return parentDTO;
+        } else {
+            log.error("Parent with Kakao ID {} not found.", parentKakaoId);
+            return null;
+        }
+    }
 }
